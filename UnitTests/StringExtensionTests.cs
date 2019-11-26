@@ -1,6 +1,7 @@
 using NUnit.Framework;
 
 using Mw.StringUtilities;
+using static Mw.StringUtilities.StringExtensions;
 
 namespace UnitTests
 {
@@ -17,6 +18,18 @@ namespace UnitTests
         public void LeftOfFirst( string source, string match, string expected )
         {
             string result = source.LeftOfFirst( match );
+            Assert.AreEqual( expected, result );
+        }
+
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "00" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "00" )]
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "00" )]          
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "00A11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnEmpty, System.StringComparison.InvariantCulture, "" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnNull, System.StringComparison.InvariantCulture, null )]
+        public void LeftOfFirst( string source, string match, NotFoundAction notFound, System.StringComparison stringComparison,  string expected )
+        {
+            string result = source.LeftOfFirst( match, notFound, stringComparison );
             Assert.AreEqual( expected, result );
         }
 
@@ -45,6 +58,18 @@ namespace UnitTests
             Assert.AreEqual( expected, result );
         }
 
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "00" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "00" )]
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "00" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "00A11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnEmpty, System.StringComparison.InvariantCulture, "" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnNull, System.StringComparison.InvariantCulture, null )]
+        public void LeftOfLast( string source, string match, NotFoundAction notFound, System.StringComparison stringComparison, string expected )
+        {
+            string result = source.LeftOfLast( match, notFound, stringComparison );
+            Assert.AreEqual( expected, result );
+        }
+
         [TestCase( "one,two,two,three", ',', "one,two,two" )]                   // general case
         [TestCase( "one,two,two,three", 'x', null )]                    // no match
         [TestCase( "one,two,two,three", 'T', null )]                    // no match - default is case sensitive
@@ -66,6 +91,18 @@ namespace UnitTests
         public void RightOfFirst( string source, string match, string expected )
         {
             string result = source.RightOfFirst( match );
+            Assert.AreEqual( expected, result );
+        }
+
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "11" )]
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "00A11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnEmpty, System.StringComparison.InvariantCulture, "" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnNull, System.StringComparison.InvariantCulture, null )]
+        public void RightOfFirst( string source, string match, NotFoundAction notFound, System.StringComparison stringComparison, string expected )
+        {
+            string result = source.RightOfFirst( match, notFound, stringComparison );
             Assert.AreEqual( expected, result );
         }
 
@@ -93,6 +130,18 @@ namespace UnitTests
             Assert.AreEqual( expected, result );
         }
 
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCultureIgnoreCase, "11" )]
+        [TestCase( "00A11", "A", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnAll, System.StringComparison.InvariantCulture, "00A11" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnEmpty, System.StringComparison.InvariantCulture, "" )]
+        [TestCase( "00A11", "a", NotFoundAction.returnNull, System.StringComparison.InvariantCulture, null )]
+        public void RightOfLast( string source, string match, NotFoundAction notFound, System.StringComparison stringComparison, string expected )
+        {
+            string result = source.RightOfLast( match, notFound, stringComparison );
+            Assert.AreEqual( expected, result );
+        }
+
         [TestCase( "one,two,two,three", ',', "three" )]                 // general case
         [TestCase( "one,two,two,three", 'x', null )]                    // no match
         [TestCase( "one,two,two,three", 'T', null )]                    // no match - default is case sensitive
@@ -104,12 +153,36 @@ namespace UnitTests
             Assert.AreEqual( expected, result );
         }
 
-        [TestCase( "one,two,three", "eerht,owt,eno" )]                  // single character match string
-        [TestCase( "o", "o" )]                                          // single character match string
+
+
+
+        [TestCase( "one,two,three", "eerht,owt,eno" )]
+        [TestCase( "o", "o" )]
+        [TestCase( "", "" )]
         public void Reverse( string source, string expected )
         {
             string result = source.Reverse();
             Assert.AreEqual( expected, result );
         }
+
+        [TestCase( "123456", true )]
+        [TestCase( "0", true )]
+        [TestCase( "1234567890123456789012345678901234567890", true )]
+        [TestCase( "0.7", false )]
+        [TestCase( "-7", false )]
+        [TestCase( "0x11", false )]
+        [TestCase( "0A", false )]
+        [TestCase( "123hello456", false )]
+        [TestCase( "hello", false )]
+        [TestCase( "h", false )]
+        [TestCase( "", false )]
+        public void IsNaturalNumber( string source, bool expected )
+        {
+            bool result = source.IsNaturalNumber();
+            Assert.AreEqual( expected, result );
+        }
+
+
+        
     }
 }
