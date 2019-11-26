@@ -4,6 +4,24 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <Authors>Mark Willis</Authors>
+    <Company />
+    <Product>String Utilities</Product>
+    <Description>String utilities that I seem to write with regularity for different projects</Description>
+    <RepositoryUrl>https://github.com/MikeAlphaRomeoKilo/StringUtilities</RepositoryUrl>
+    <PackageTags>string utilities</PackageTags>
+    <PackageProjectUrl>https://github.com/MikeAlphaRomeoKilo/StringUtilities</PackageProjectUrl>
+    <AssemblyName>Mw.StringUtilities</AssemblyName>
+    <RootNamespace>Mw.StringUtilities</RootNamespace>
+    <Copyright>Copyright (c) Mark Willis 2019</Copyright>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
