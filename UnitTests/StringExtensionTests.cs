@@ -33,6 +33,12 @@ namespace UnitTests
             Assert.AreEqual( expected, result );
         }
 
+        [Test]
+        public void LeftOfFirst_NotFoundActionThrowException_Throws()
+        {
+            Assert.Throws<System.ArgumentException>( () => "1111111".LeftOfFirst( "2", NotFoundAction.throwException));
+        }
+
         [TestCase( "one,two,two,three", ',', "one" )]                   // general case
         [TestCase( "one,two,two,three", 'x', null )]                    // no match
         [TestCase( "one,two,two,three", 'T', null )]                    // no match - default is case sensitive
