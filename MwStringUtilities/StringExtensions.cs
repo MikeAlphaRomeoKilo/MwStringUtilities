@@ -5,6 +5,13 @@ namespace Mw.StringUtilities
 {
     static public class StringExtensions
     {
+        public enum OutOfRangeAction
+        {
+            returnEmpty,
+            returnNull,
+            throwException
+        }
+
         public enum NotFoundAction
         {
             returnAll,
@@ -19,8 +26,9 @@ namespace Mw.StringUtilities
         /// <param name="source"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string Left( this string source, int length )
+        public static string Left( this string source, int length, OutOfRangeAction outOfRangeAction = OutOfRangeAction.returnNull )
         {
+            if( length > source.Length  ||  length < 0 ) { return source.HandleOutOfRangeAction( outOfRangeAction ); }
             return source.Substring( 0, length );
         }
 
@@ -30,8 +38,9 @@ namespace Mw.StringUtilities
         /// <param name="source"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string Right( this string source, int length )
+        public static string Right( this string source, int length, OutOfRangeAction outOfRangeAction = OutOfRangeAction.returnNull )
         {
+            if( length > source.Length || length < 0 ) { return source.HandleOutOfRangeAction( outOfRangeAction ); }
             return source.Substring( source.Length - length );
         }
 
@@ -173,15 +182,29 @@ namespace Mw.StringUtilities
         /// <returns></returns>
         public static String Reverse( this String source )
         {
-            int len = source.Length;
-            char[] arr = new char[len];
+            int length = source.Length;
+            char[] buffer = new char[length];
 
-            for( int i = 0; i < len; i++ )
+            for( int i = 0; i < length; i++ )
             {
-                arr[i] = source[len - 1 - i];
+                buffer[i] = source[length - 1 - i];
             }
 
-            return new string( arr );
+            return new string( buffer );
+        }
+
+
+        /// <summary>
+        /// Removes a string consisting of the source string with the n specified characters removed from the left.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="removeLength">the number of characters to remove</param>
+        /// <returns></returns>
+        static public String RemoveLeft( this String source, int removeLength )
+        {
+            if( removeLength >= source.Length ) return String.Empty;
+            string subString = source.Substring( 0, source.Length - removeLength );
+            return subString;
         }
 
 
@@ -210,6 +233,18 @@ namespace Mw.StringUtilities
         {
             // must have something
             return source.Any() && source.All( char.IsDigit );
+        }
+
+
+        private static string HandleOutOfRangeAction( this string source, OutOfRangeAction outOfRangeAction )
+        {
+            switch( outOfRangeAction )
+            {
+                case OutOfRangeAction.returnNull: return null;
+                case OutOfRangeAction.returnEmpty: return String.Empty;
+                case OutOfRangeAction.throwException: throw new IndexOutOfRangeException( "index is not in range" );
+                default: throw new NotImplementedException( $"{outOfRangeAction} is not handled" );
+            }
         }
 
 

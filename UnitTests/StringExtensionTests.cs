@@ -8,6 +8,29 @@ namespace UnitTests
     [TestFixture]
     public class StringExtensionTests
     {
+        [TestCase( "one,two", 3, "one" )] 
+        [TestCase( "one,two", 0, "" )]                 // min
+        [TestCase( "one,two", 7, "one,two" )]           // max
+        [TestCase( "one,two", -1, null )]               // negative
+        [TestCase( "one,two", 9, null )]                // too many
+        public void Left( string source, int count, string expected )
+        {
+            string result = source.Left( count );
+            Assert.AreEqual( expected, result );
+        }
+
+        [TestCase( "one,two", 3, "two" )]
+        [TestCase( "one,two", 0, "" )]                 // min
+        [TestCase( "one,two", 7, "one,two" )]           // max
+        [TestCase( "one,two", -1, null )]               // negative
+        [TestCase( "one,two", 9, null )]                // too many
+        public void Right( string source, int count, string expected )
+        {
+            string result = source.Right( count );
+            Assert.AreEqual( expected, result );
+        }
+
+
         [TestCase( "one,two,two,three", ",", "one" )]                   // single character match string
         [TestCase( "one,two,two,three", "two", "one," )]                // multi character match string
         [TestCase( "one,two,two,three", "abc", null )]                  // no match
@@ -33,12 +56,6 @@ namespace UnitTests
             Assert.AreEqual( expected, result );
         }
 
-        [Test]
-        public void LeftOfFirst_NotFoundActionThrowException_Throws()
-        {
-            Assert.Throws<System.ArgumentException>( () => "1111111".LeftOfFirst( "2", NotFoundAction.throwException));
-        }
-
         [TestCase( "one,two,two,three", ',', "one" )]                   // general case
         [TestCase( "one,two,two,three", 'x', null )]                    // no match
         [TestCase( "one,two,two,three", 'T', null )]                    // no match - default is case sensitive
@@ -48,6 +65,12 @@ namespace UnitTests
         {
             string result = source.LeftOfFirst( match );
             Assert.AreEqual( expected, result );
+        }
+
+        [Test]
+        public void LeftOfFirst_NotFoundActionThrowException_Throws()
+        {
+            Assert.Throws<System.ArgumentException>( () => "1111111".LeftOfFirst( "2", NotFoundAction.throwException ) );
         }
 
 
@@ -186,9 +209,6 @@ namespace UnitTests
         {
             bool result = source.IsNaturalNumber();
             Assert.AreEqual( expected, result );
-        }
-
-
-        
+        }       
     }
 }

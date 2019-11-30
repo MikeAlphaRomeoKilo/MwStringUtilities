@@ -15,6 +15,9 @@
     <AssemblyName>Mw.StringUtilities</AssemblyName>
     <RootNamespace>Mw.StringUtilities</RootNamespace>
     <Copyright>Copyright (c) Mark Willis 2019</Copyright>
+    <Version>1.1.0</Version>
+    <PackageReleaseNotes>Added RemoveLeft() function.
+Added error handling optional parameter to Left() and Right() functions</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
